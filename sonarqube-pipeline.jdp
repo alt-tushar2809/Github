@@ -1,20 +1,29 @@
       pipeline {
         agent any 
         stages {
-          stage('Pull-Code') { 
+          stage('Pull-Code') {  
             steps {
-              git credentialsId: 'gitlab', url: 'https://gitlab.com/onkar248/jenkins.git' 
+                git credentialsId: 'gitlab', url: 'https://gitlab.com/atulyw/cbz-student-ui.git'
             }
           }
-          stage('Test') { 
-            steps {
-              sh label: '', script: 'pwd'
+          stage('Build'){
+              steps {
+                  withSonarQubeEnv(installationName: 'sonarqube-server' ,credentialsId: 'sonar-token') {
+                    sh 'mvn clean package sonar:sonar'
+                } 
+              }
+          }
+          stage('Quality-Gate'){
+              steps {
+                  timeout(time: 1, unit: 'HOURS'){
+                  waitForQualityGate abortPipeline: true
+              }
             }
           }
-          stage('Deploy') { 
-            steps {
-              echo 'Deployed'
-            }
+          stage('Deploy'){
+              steps {
+                  deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://172.31.33.48:8080')], contextPath: '/', war: '**/*.war'
+              }
           }
         }
       }
