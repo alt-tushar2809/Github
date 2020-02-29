@@ -1,0 +1,20 @@
+      pipeline {
+        agent any 
+        stages {
+          stage('Pull-Code') { 
+            steps {
+              git credentialsId: 'gitlab', url: 'https://gitlab.com/onkar248/jenkins.git' 
+            }
+          }
+          stage('Test') { 
+            steps {
+              sh label: '', script: 'pwd'
+            }
+          }
+          stage('Deploy') { 
+            steps {
+              echo 'Deployed'
+            }
+          }
+        }
+      }
