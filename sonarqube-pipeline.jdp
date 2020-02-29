@@ -10,8 +10,8 @@
               steps {
                 withSonarQubeEnv('My SonarQube Server') {
                 sh label1: '',script:'mvn clean package sonar:sonar'
-                } }
-                
+                }
+                 }
               }
           }
           stage('Deploy'){
