@@ -8,7 +8,7 @@
           }
           stage('Build'){
               steps {
-                withSonarQubeEnv('sonar') {
+                withSonarQubeEnv('sonar-qube') {
                 sh label1: '',script:'mvn clean package sonar:sonar'
                 }
                  }
