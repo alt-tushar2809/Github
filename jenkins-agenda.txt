@@ -1,0 +1,11 @@
+1. Jenkins installation
+2. jenkins introduction
+3. Jobs
+4. Plugins
+5. Nodes
+6. Pipeline
+    * Declarative vs Scripted
+    * Declarative
+    * Default Env
+    * Global Env Vs Env in Stages
+    * Multi-Agent

@@ -1,0 +1,47 @@
+      pipeline {
+        agent any //{
+            //label 'linux-java9'
+        //}
+        environment{
+            test_ip = '172.25.0.100'
+            prod_ip = '10.0.0.12'
+        } 
+        stages {
+          stage('Pull-Code') {
+               
+            steps {
+             sh 'printenv' 
+            }
+          }
+          stage('print-env'){
+          environment{
+              server_name = 'rhel'
+                        }
+              steps {
+                  echo "Build No is ${env.BUILD_ID}"
+                  echo "Node name is ${env.NODE_NAME}"
+                  echo "Job from the branch ${env.GIT_BRANCH}"
+                  echo "name of server ${env.server_name}"
+              }
+          }
+          
+          
+          stage('Prod_ip'){
+              
+              steps {
+                  echo "Prod server ip is ${env.prod_ip}"
+                  echo "Test env ip ${env.test_ip}"
+                  echo "Node Name ${env.NODE_LABELS}"
+              }
+          } 
+        }
+          post {
+              always {
+                  emailext attachLog: true, body: '''$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS:
+                  $DEFAULT_CONTENT''', subject: '$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!', to: 'warghaneatul@gmail.com'
+
+              }
+          
+          }
+        }
+      
